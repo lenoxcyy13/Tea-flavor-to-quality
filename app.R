@@ -74,8 +74,8 @@ ui <- fluidPage(
         mainPanel(
             tabsetPanel(type = "tabs",
                         tabPanel("Plot", plotOutput("distPlot"), plotOutput("boxplot")),
-                        tabPanel('3D Scatter', plotlyOutput("scatter")),
-                        tabPanel("Tree", plotOutput("Tree"))
+                        tabPanel('3D Scatter', plotlyOutput("scatter"), width = "100%"),
+                        tabPanel("Tree", plotOutput("Tree"), width = "100%")
             )
         )
     )
