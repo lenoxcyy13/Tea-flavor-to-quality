@@ -157,6 +157,9 @@ server <- function(input, output) {
         if (sel.trt==2){
             tree <- rpart(Season~., data=tea, cp=.01)
         }
+        if (sel.trt==3){
+            tree <- rpart(Baking~., data=tea, cp=.01)
+        }
         if (sel.trt==4){
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
             tree <- rpart(Variety~., data=tea, cp=.01)
@@ -187,22 +190,6 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
