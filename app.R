@@ -180,7 +180,7 @@ server <- function(input, output) {
         
         fig <- plot_ly(type = "scatter3d", mode = "markers", data = tea,
                        x = ~tea[, sel.var], y = ~tea[, sel.var2], z = ~tea[, sel.var3],
-                       color = ~tea[, sel.trt], width = 800, height = 600)
+                       color = ~tea[, sel.trt], width = 1000, height = 600)
         fig <- fig %>% layout(scene = list(xaxis = list(title = colnames(tea)[sel.var]),
                                            yaxis = list(title = colnames(tea)[sel.var2]),
                                            zaxis = list(title = colnames(tea)[sel.var3])))
