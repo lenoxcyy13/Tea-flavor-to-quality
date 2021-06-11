@@ -84,7 +84,7 @@ server <- function(input, output) {
     tea = read.csv('teaFlavor.csv', header = TRUE)
     
     output$boxplot <- renderPlot({
-        sel.var = match(input$var,colnames(tea))
+        sel.var = match(input$var,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
         if (sel.trt==1){
             tea <- select (tea,-c(Variety, Season))
@@ -101,7 +101,7 @@ server <- function(input, output) {
                 ylab=paste(colnames(tea)[sel.var]))
     })
     output$distPlot <- renderPlot({
-        sel.var = match(input$var,colnames(tea))
+        sel.var = match(input$var,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
 
         if (sel.trt==1){
@@ -160,7 +160,7 @@ server <- function(input, output) {
         
     })
     output$Tree <- renderPlot({
-        sel.var = match(input$var,colnames(tea))
+        sel.var = match(input$var,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
         
         if (sel.trt==1){
@@ -177,13 +177,13 @@ server <- function(input, output) {
             tree <- rpart(Variety~., data=tea, cp=.01)
         }
         
-        rpart.plot(tree, box.palette="RdBu", shadow.col="gray", nn=TRUE)
+        prp(tree, fallen.leaves=TRUE, box.palette="RdBu", shadow.col="gray", extra=2)
         
     })
     output$scatter <- renderPlotly({
-        sel.var = match(input$var,colnames(tea))
-        sel.var2 = match(input$var2,colnames(tea))
-        sel.var3 = match(input$var3,colnames(tea))
+        sel.var = match(input$var,colnames(tea))-2
+        sel.var2 = match(input$var2,colnames(tea))-2
+        sel.var3 = match(input$var3,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
         
         if (sel.trt==1){
