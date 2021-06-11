@@ -156,7 +156,7 @@ server <- function(input, output) {
         
         fig <- plot_ly(type = "scatter3d", mode = "markers", data = tea,
                        x = ~tea[, sel.var], y = ~tea[, sel.var2], z = ~tea[, sel.var3],
-                       color = ~tea[, sel.trt], width = 900, height = 600)
+                       color = ~tea[, sel.trt], width = 900, height = 700)
         fig <- fig %>% layout(scene = list(xaxis = list(title = colnames(tea)[sel.var]),
                                            yaxis = list(title = colnames(tea)[sel.var2]),
                                            zaxis = list(title = colnames(tea)[sel.var3])))
@@ -166,7 +166,7 @@ server <- function(input, output) {
         sel.trt = match(input$trt,colnames(tea))
         if (sel.trt==1){
             tea <- select (tea,-c(Variety, Season))
-            tree <- rpart(Origin~., data=tea, cp=0.001, maxdepth=6)
+            tree <- rpart(Origin~., data=tea, minsplit=10)
         }
         if (sel.trt==2){
             tea <- select (tea,-c(Origin, Variety))
