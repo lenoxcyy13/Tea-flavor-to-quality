@@ -86,8 +86,14 @@ server <- function(input, output) {
     output$boxplot <- renderPlot({
         sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
-        
+        if (sel.trt==1){
+            tea <- select (tea,-c(Variety, Season))
+        }
+        if (sel.trt==2){
+            tea <- select (tea,-c(Origin, Variety))
+        }
         if (sel.trt==3){
+            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
         boxplot(tea[,sel.var]~factor(tea[,sel.trt]),
@@ -98,7 +104,14 @@ server <- function(input, output) {
         sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
 
+        if (sel.trt==1){
+            tea <- select (tea,-c(Variety, Season))
+        }
+        if (sel.trt==2){
+            tea <- select (tea,-c(Origin, Variety))
+        }
         if (sel.trt==3){
+            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
 
@@ -149,14 +162,17 @@ server <- function(input, output) {
     output$Tree <- renderPlot({
         sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
-
+        
         if (sel.trt==1){
+            tea <- select (tea,-c(Variety, Season))
             tree <- rpart(Origin~., data=tea, cp=.01)
         }
         if (sel.trt==2){
+            tea <- select (tea,-c(Origin, Variety))
             tree <- rpart(Season~., data=tea, cp=.01)
         }
         if (sel.trt==3){
+            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
             tree <- rpart(Variety~., data=tea, cp=.01)
         }
@@ -170,9 +186,16 @@ server <- function(input, output) {
         sel.var3 = match(input$var3,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
         
+        if (sel.trt==1){
+            tea <- select (tea,-c(Variety, Season))
+        }
+        if (sel.trt==2){
+            tea <- select (tea,-c(Origin, Variety))
+        }
         if (sel.trt==3){
+            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
-        } 
+        }
         
         fig <- plot_ly(type = "scatter3d", mode = "markers", data = tea,
                        x = ~tea[, sel.var], y = ~tea[, sel.var2], z = ~tea[, sel.var3],
