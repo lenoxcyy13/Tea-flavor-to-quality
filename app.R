@@ -84,34 +84,20 @@ server <- function(input, output) {
     tea = read.csv('teaFlavor.csv', header = TRUE)
     
     output$boxplot <- renderPlot({
-        sel.var = match(input$var,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
-        if (sel.trt==1){
-            tea <- select (tea,-c(Variety, Season))
-        }
-        if (sel.trt==2){
-            tea <- select (tea,-c(Origin, Variety))
-        }
+        sel.var = match(input$var,colnames(tea))
         if (sel.trt==3){
-            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
+        
         boxplot(tea[,sel.var]~factor(tea[,sel.trt]),
                 xlab=paste(colnames(tea)[sel.trt]),
                 ylab=paste(colnames(tea)[sel.var]))
     })
     output$distPlot <- renderPlot({
-        sel.var = match(input$var,colnames(tea))-2
+        sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
-
-        if (sel.trt==1){
-            tea <- select (tea,-c(Variety, Season))
-        }
-        if (sel.trt==2){
-            tea <- select (tea,-c(Origin, Variety))
-        }
         if (sel.trt==3){
-            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
 
@@ -159,41 +145,12 @@ server <- function(input, output) {
         legend("topright",colnames(tcls),fill=1:n)
         
     })
-    output$Tree <- renderPlot({
-        sel.var = match(input$var,colnames(tea))-2
-        sel.trt = match(input$trt,colnames(tea))
-        
-        if (sel.trt==1){
-            tea <- select (tea,-c(Variety, Season))
-            tree <- rpart(Origin~., data=tea, cp=.01)
-        }
-        if (sel.trt==2){
-            tea <- select (tea,-c(Origin, Variety))
-            tree <- rpart(Season~., data=tea, cp=.01)
-        }
-        if (sel.trt==3){
-            tea <- select (tea,-c(Origin, Season))
-            tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
-            tree <- rpart(Variety~., data=tea, cp=.01)
-        }
-        
-        prp(tree, fallen.leaves=TRUE, box.palette="RdBu", shadow.col="gray", extra=2)
-        
-    })
     output$scatter <- renderPlotly({
-        sel.var = match(input$var,colnames(tea))-2
-        sel.var2 = match(input$var2,colnames(tea))-2
-        sel.var3 = match(input$var3,colnames(tea))-2
         sel.trt = match(input$trt,colnames(tea))
-        
-        if (sel.trt==1){
-            tea <- select (tea,-c(Variety, Season))
-        }
-        if (sel.trt==2){
-            tea <- select (tea,-c(Origin, Variety))
-        }
+        sel.var = match(input$var,colnames(tea))
+        sel.var2 = match(input$var2,colnames(tea))
+        sel.var3 = match(input$var3,colnames(tea))
         if (sel.trt==3){
-            tea <- select (tea,-c(Origin, Season))
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
         
@@ -204,6 +161,24 @@ server <- function(input, output) {
                                            yaxis = list(title = colnames(tea)[sel.var2]),
                                            zaxis = list(title = colnames(tea)[sel.var3])))
         fig
+    })
+    output$Tree <- renderPlot({
+        sel.trt = match(input$trt,colnames(tea))
+        if (sel.trt==1){
+            tea <- select (tea,-c(Variety, Season))
+            tree <- rpart(Origin~., data=tea, cp=0.001, maxdepth=6)
+        }
+        if (sel.trt==2){
+            tea <- select (tea,-c(Origin, Variety))
+            tree <- rpart(Season~., data=tea)
+        }
+        if (sel.trt==3){
+            tea <- select (tea,-c(Origin, Season))
+            tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
+            tree <- rpart(Variety~., data=tea)
+        }
+        prp(tree, fallen.leaves=TRUE, box.palette="RdBu", shadow.col="gray", extra=2)
+        
     })
 }
 
