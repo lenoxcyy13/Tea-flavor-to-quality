@@ -13,6 +13,7 @@ library(rpart)
 library(rpart.plot)
 library(dplyr)
 library(plotly)
+library(partykit)
 
 ui <- fluidPage(
     
@@ -177,7 +178,10 @@ server <- function(input, output) {
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
             tree <- rpart(Variety~., data=tea)
         }
-        prp(tree, fallen.leaves=TRUE, box.palette="RdBu", shadow.col="gray", extra=2)
+        rparty.tree <- as.party(tree) # 轉換cart決策樹
+        print(rparty.tree)
+        prp(tree, fallen.leaves=TRUE, box.palette="RdBu", 
+            shadow.col="gray", extra=2,legend.x = -1)
         
     })
 }
