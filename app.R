@@ -25,7 +25,6 @@ ui <- fluidPage(
                         "treatments to analysis", 
                         choices = c("Origin"="Origin",
                                     "Season"="Season",
-                                    "Baking"="Baking",
                                     "Variety"="Variety"
                         )),
             selectInput("var", 
@@ -88,7 +87,7 @@ server <- function(input, output) {
         sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
         
-        if (sel.trt==4){
+        if (sel.trt==3){
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
         boxplot(tea[,sel.var]~factor(tea[,sel.trt]),
@@ -99,7 +98,7 @@ server <- function(input, output) {
         sel.var = match(input$var,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
 
-        if (sel.trt==4){
+        if (sel.trt==3){
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         }
 
@@ -158,9 +157,6 @@ server <- function(input, output) {
             tree <- rpart(Season~., data=tea, cp=.01)
         }
         if (sel.trt==3){
-            tree <- rpart(Baking~., data=tea, cp=.01)
-        }
-        if (sel.trt==4){
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
             tree <- rpart(Variety~., data=tea, cp=.01)
         }
@@ -174,7 +170,7 @@ server <- function(input, output) {
         sel.var3 = match(input$var3,colnames(tea))
         sel.trt = match(input$trt,colnames(tea))
         
-        if (sel.trt==4){
+        if (sel.trt==3){
             tea <- tea %>% filter(Variety %in% c('V1', 'V2', 'V3', 'V4'))
         } 
         
