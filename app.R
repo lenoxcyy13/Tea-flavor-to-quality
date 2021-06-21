@@ -194,7 +194,7 @@ server <- function(input, output) {
         if (sel.trt==3){
             file_name <- "tree_variety.png"
         }
-        img(height = 400, width = 800, src = file_name)
+        img(height = 500, width = 800, src = file_name)
     })
 }
 
