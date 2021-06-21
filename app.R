@@ -75,7 +75,7 @@ ui <- fluidPage(
             tabsetPanel(type = "tabs",
                         tabPanel("Plot", plotOutput("distPlot"), plotOutput("boxplot")),
                         tabPanel('3D Scatter', plotlyOutput("scatter"), width = "100%"),
-                        tabPanel("Tree", plotOutput("Tree"), width = "100%")
+                        tabPanel("Tree", plotOutput("Tree"), uiOutput("img"))
             )
         )
     )
@@ -179,10 +179,22 @@ server <- function(input, output) {
             tree <- rpart(Variety~., data=tea)
         }
         rparty.tree <- as.party(tree) # 轉換cart決策樹
-        print(rparty.tree)
+        # print(rparty.tree)
         prp(tree, fallen.leaves=TRUE, box.palette="RdBu", 
             shadow.col="gray", extra=2,legend.x = -1)
-        
+    })
+    output$img <- renderUI({
+        sel.trt = match(input$trt,colnames(tea))
+        if (sel.trt==1){
+            file_name = "tree_origin.png"
+        }
+        if (sel.trt==2){
+            file_name = "tree_season.png"
+        }
+        if (sel.trt==3){
+            file_name <- "tree_variety.png"
+        }
+        img(height = 400, width = 800, src = file_name)
     })
 }
 
